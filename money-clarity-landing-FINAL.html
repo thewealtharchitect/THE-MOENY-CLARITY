@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Money Clarity — See Where Every Dollar Goes</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Playfair+Display:ital,wght@0,700;1,400;1,700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:#07070f;color:#e8e4dc;font-family:'DM Sans',sans-serif;overflow-x:hidden}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:#07070f}
+::-webkit-scrollbar-thumb{background:#2a2a3a;border-radius:2px}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal.d1{transition-delay:.1s}.reveal.d2{transition-delay:.2s}.reveal.d3{transition-delay:.3s}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(7,7,15,.93);backdrop-filter:blur(12px);border-bottom:1px solid #c9a84c18;height:60px;display:flex;align-items:center}
+.nav-inner{max-width:1100px;margin:0 auto;padding:0 24px;width:100%;display:flex;justify-content:space-between;align-items:center}
+.nav-logo-sub{font-size:7px;letter-spacing:5px;color:#c9a84c;font-family:monospace;opacity:.7;margin-bottom:2px}
+.nav-logo{font-size:14px;font-weight:700;background:linear-gradient(135deg,#e8e4dc,#c9a84c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.nav-cta{padding:10px 22px;background:linear-gradient(135deg,#c9a84c,#a07830);border-radius:8px;color:#0a0a0f;font-size:12px;font-weight:700;text-decoration:none;letter-spacing:1px;font-family:monospace;border:none;cursor:pointer}
+section{padding:100px 24px}
+.inner{max-width:1000px;margin:0 auto}
+.inner-sm{max-width:640px;margin:0 auto}
+.inner-md{max-width:860px;margin:0 auto}
+.label{font-size:9px;letter-spacing:5px;color:#c9a84c;font-family:monospace;text-align:center;margin-bottom:16px;display:block}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,52px);font-weight:700;text-align:center;margin-bottom:16px;letter-spacing:-1px;line-height:1.15}
+.section-sub{text-align:center;color:#5a5060;font-size:16px;max-width:480px;margin:0 auto 60px;line-height:1.7}
+.gold{background:linear-gradient(135deg,#c9a84c,#e8c97a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-style:italic}
+.card{background:#0f0f1a;border:1px solid #1e1e2e;border-radius:16px}
+#hero{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:100px 24px 80px;position:relative;overflow:hidden}
+#hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 40%,#c9a84c0a,transparent);pointer-events:none}
+#hero::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#c9a84c,transparent)}
+.hero-inner{max-width:820px;text-align:center;position:relative;z-index:1}
+.hero-badge{display:inline-block;padding:6px 18px;background:#c9a84c12;border:1px solid #c9a84c30;border-radius:20px;font-size:10px;letter-spacing:4px;color:#c9a84c;font-family:monospace;margin-bottom:32px;animation:fadeDown .8s ease both}
+.hero-h1{font-family:'Playfair Display',serif;font-size:clamp(40px,7vw,88px);font-weight:700;line-height:1.05;margin:0 0 28px;letter-spacing:-2px;animation:fadeDown .8s .1s ease both}
+.hero-p{font-size:clamp(16px,2.2vw,20px);color:#7a7080;max-width:560px;margin:0 auto 40px;line-height:1.7;animation:fadeDown .8s .2s ease both}
+.btn-gold{padding:18px 44px;background:linear-gradient(135deg,#c9a84c,#a07830);border-radius:12px;color:#0a0a0f;font-size:16px;font-weight:700;text-decoration:none;letter-spacing:1px;box-shadow:0 0 40px #c9a84c30;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;display:inline-block}
+.hero-note{margin-top:16px;font-size:11px;color:#3a3a4a;letter-spacing:2px;font-family:monospace;animation:fadeDown .8s .4s ease both}
+.stats{display:flex;justify-content:center;margin-top:64px;flex-wrap:wrap;animation:fadeDown .8s .5s ease both}
+.stat{padding:20px 40px;border-right:1px solid #1e1e2e;text-align:center}
+.stat:last-child{border-right:none}
+.stat-n{font-size:clamp(28px,4vw,40px);font-weight:800;color:#c9a84c;font-family:'Playfair Display',serif}
+.stat-l{font-size:11px;color:#4a4a5a;letter-spacing:2px;font-family:monospace;margin-top:4px}
+#pain{background:#0a0a12}
+.pain-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.pain-card{padding:24px;background:#0f0f1a;border:1px solid #1e1e2e;border-radius:14px;font-size:14px;color:#6a6070;line-height:1.7;font-style:italic}
+.pain-quote{margin-top:48px;padding:28px 32px;background:linear-gradient(135deg,#1a1608,#0f0f18);border:1px solid #c9a84c25;border-radius:16px;text-align:center;font-size:18px;color:#e8e4dc;line-height:1.7;font-family:'Playfair Display',serif;font-style:italic}
+#scores{position:relative;overflow:hidden}
+#scores::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 50%,#c9a84c06,transparent);pointer-events:none}
+.score-tabs{display:flex;gap:10px;justify-content:center;margin-bottom:36px;flex-wrap:wrap}
+.score-tab{padding:13px 26px;border-radius:10px;cursor:pointer;transition:all .25s;background:#0f0f1a;border:1px solid #1e1e2e;color:#4a4a5a;font-family:monospace;font-size:13px;font-weight:700;letter-spacing:1px}
+.score-detail{background:#0f0f1a;border-radius:20px;overflow:hidden;transition:all .4s ease;border:1px solid #1e1e2e}
+.score-top{padding:32px 40px 28px;border-bottom:1px solid #1e1e2e;transition:background .4s}
+.score-range-num{font-size:clamp(48px,7vw,88px);font-family:'Playfair Display',serif;font-weight:700;line-height:1;transition:color .4s}
+.score-label-row{display:flex;align-items:center;gap:12px;margin-bottom:8px;margin-top:8px}
+.score-dot{width:10px;height:10px;border-radius:50%;transition:background .4s,box-shadow .4s;flex-shrink:0}
+.score-label{font-size:22px;font-weight:700;transition:color .4s}
+.score-tagline{font-size:16px;color:#8a8070;line-height:1.6;font-style:italic;font-family:'Playfair Display',serif}
+.score-body{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.score-col{padding:28px 32px;border-right:1px solid #1e1e2e}
+.score-col:last-child{border-right:none;transition:background .4s}
+.score-col-label{font-size:9px;letter-spacing:3px;color:#4a4a5a;font-family:monospace;margin-bottom:14px}
+.score-body-text{font-size:14px;color:#7a7080;line-height:1.8;margin:0}
+.score-bullets{display:flex;flex-direction:column;gap:10px}
+.score-bullet{display:flex;gap:10px;align-items:flex-start}
+.score-bullet-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:7px;transition:background .4s}
+.score-bullet-text{font-size:13px;color:#8a8070;line-height:1.6}
+.score-next-text{font-size:14px;color:#c8c0b4;line-height:1.8;margin:0 0 20px}
+.score-cta-btn{display:inline-block;padding:11px 22px;border-radius:8px;font-size:11px;font-weight:700;font-family:monospace;letter-spacing:1px;cursor:pointer;border:none;transition:all .25s}
+.spectrum-wrap{margin-top:28px;padding:24px 32px;background:#0f0f1a;border:1px solid #1e1e2e;border-radius:16px}
+.spectrum-label{font-size:9px;letter-spacing:3px;color:#4a4a5a;font-family:monospace;margin-bottom:16px}
+.spectrum-bar{position:relative;height:12px;border-radius:6px;background:linear-gradient(90deg,#f87171 0%,#fb923c 25%,#facc15 50%,#4ade80 80%,#22c55e 100%);margin-bottom:12px}
+.spectrum-ind{position:absolute;top:50%;transform:translate(-50%,-50%);width:22px;height:22px;border-radius:50%;border:3px solid #0f0f1a;transition:left .5s ease,background .4s,box-shadow .4s}
+.spectrum-nums{display:flex;justify-content:space-between}
+.spectrum-num{font-size:10px;color:#3a3a4a;font-family:monospace}
+.spectrum-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px}
+.spectrum-legend-item{display:flex;align-items:center;gap:6px}
+.spectrum-legend-dot{width:8px;height:8px;border-radius:50%}
+.spectrum-legend-text{font-size:10px;color:#4a4a5a;font-family:monospace}
+#how{background:#0a0a12}
+.steps{display:flex;flex-direction:column}
+.step{display:flex;gap:32px;padding:40px 0;border-bottom:1px solid #1e1e2e;align-items:flex-start;flex-wrap:wrap}
+.step:last-child{border-bottom:none}
+.step-num{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;font-family:monospace;flex-shrink:0}
+.step-tag{font-size:9px;letter-spacing:3px;font-family:monospace;margin-bottom:10px;opacity:.7}
+.step-title{font-size:clamp(18px,2.5vw,24px);font-weight:700;color:#e8e4dc;margin-bottom:12px;letter-spacing:-.5px}
+.step-body{font-size:15px;color:#6a6070;line-height:1.8}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.feature-card{padding:24px;background:#0f0f1a;border:1px solid #1e1e2e;border-radius:14px;transition:border-color .2s,transform .2s;cursor:default}
+.feature-card:hover{transform:translateY(-2px)}
+.feature-icon{font-size:22px;margin-bottom:12px}
+.feature-title{font-size:14px;font-weight:700;margin-bottom:8px}
+.feature-body{font-size:13px;color:#5a5060;line-height:1.7}
+#bonuses{background:#0a0a12}
+.bonus-card{display:flex;gap:24px;padding:28px 32px;background:#0f0f1a;border-radius:16px;align-items:flex-start;flex-wrap:wrap;margin-bottom:14px}
+.bonus-label{font-size:9px;letter-spacing:3px;font-family:monospace;margin-bottom:6px;opacity:.7}
+.bonus-title{font-size:16px;font-weight:700;color:#e8e4dc;margin-bottom:4px}
+.bonus-value{font-size:11px;font-family:monospace;font-weight:700}
+.bonus-body{flex:1;min-width:200px;font-size:14px;color:#6a6070;line-height:1.8;padding-top:20px}
+.bonus-total{margin-top:20px;padding:18px 28px;background:#13131c;border:1px solid #c9a84c20;border-radius:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.testimonials-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:48px}
+.testi-card{padding:28px;background:#0f0f1a;border:1px solid #1e1e2e;border-radius:16px}
+.testi-head{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.testi-score{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0}
+.testi-name{font-size:13px;font-weight:600;color:#e8e4dc}
+.testi-role{font-size:11px;color:#4a4a5a;font-family:monospace}
+.testi-quote{font-size:14px;color:#7a7080;line-height:1.8;font-style:italic}
+#offer{background:#0a0a12}
+.offer-card{background:#0f0f1a;border:1px solid #c9a84c25;border-radius:20px;overflow:hidden}
+.offer-top{background:linear-gradient(135deg,#1a1608,#0f0f18);padding:28px 32px;border-bottom:1px solid #1e1e2e}
+.offer-top-label{font-size:11px;letter-spacing:3px;color:#c9a84c;font-family:monospace;margin-bottom:8px}
+.offer-price-row{display:flex;align-items:baseline;gap:12px}
+.offer-price{font-size:64px;font-weight:800;color:#c9a84c;font-family:'Playfair Display',serif;line-height:1}
+.offer-was{font-size:18px;color:#3a3a4a;text-decoration:line-through}
+.offer-note{font-size:13px;color:#5a5060;margin-top:8px}
+.offer-row{display:flex;justify-content:space-between;align-items:center;padding:16px 32px;border-bottom:1px solid #1a1a24}
+.offer-row-left{display:flex;gap:12px;align-items:center}
+.offer-check{width:18px;height:18px;border-radius:50%;background:#c9a84c15;border:1px solid #c9a84c30;display:flex;align-items:center;justify-content:center;font-size:10px;color:#c9a84c;flex-shrink:0}
+.offer-row-label{font-size:14px;color:#c8c0b4}
+.offer-row-val{font-size:13px;color:#4a4a5a;font-family:monospace}
+.offer-btn-wrap{padding:28px 32px}
+.offer-btn{display:block;text-align:center;padding:20px;background:linear-gradient(135deg,#c9a84c,#a07830);border-radius:12px;color:#0a0a0f;font-size:16px;font-weight:800;text-decoration:none;letter-spacing:1px;box-shadow:0 0 40px #c9a84c25;font-family:monospace;border:none;cursor:pointer;width:100%}
+.offer-spots{text-align:center;margin-top:14px;font-size:11px;color:#3a3a4a;letter-spacing:1px;font-family:monospace}
+.guarantee-card{padding:40px;background:#0f0f1a;border:1px solid #4ade8025;border-radius:20px;text-align:center}
+.guarantee-title{font-family:'Playfair Display',serif;font-size:clamp(22px,3vw,32px);font-weight:700;margin-bottom:16px;line-height:1.3}
+.guarantee-body{font-size:15px;color:#6a6070;line-height:1.8;max-width:440px;margin:0 auto}
+#scarcity{background:#0a0a12}
+.scarcity-card{padding:48px 40px;background:linear-gradient(135deg,#1a1608,#0f0f1a);border:1px solid #c9a84c30;border-radius:20px;text-align:center}
+.scarcity-title{font-family:'Playfair Display',serif;font-size:clamp(22px,3vw,40px);font-weight:700;margin-bottom:20px;line-height:1.2}
+.scarcity-body{font-size:15px;color:#6a6070;line-height:1.8;margin-bottom:24px;max-width:480px;margin-left:auto;margin-right:auto}
+.scarcity-sub{font-size:14px;color:#4a4a5a;line-height:1.7;margin-bottom:32px}
+#paywall-overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:500;display:none;align-items:center;justify-content:center;padding:16px;overflow-y:auto}
+#paywall-overlay.show{display:flex}
+.paywall-modal{background:#0f0f1a;border:1px solid #c9a84c30;border-radius:24px;max-width:520px;width:100%;overflow:hidden;animation:modalIn .35s cubic-bezier(.34,1.56,.64,1) both;max-height:90vh;overflow-y:auto;position:relative}
+.paywall-header{background:linear-gradient(135deg,#1a1608,#0f0f1a);padding:36px 36px 28px;border-bottom:1px solid #c9a84c20;text-align:center}
+.paywall-close{position:absolute;top:16px;right:16px;background:#13131c;border:1px solid #2a2a3a;border-radius:8px;color:#6a6070;font-size:18px;cursor:pointer;width:36px;height:36px;display:flex;align-items:center;justify-content:center;line-height:1;z-index:10}
+.paywall-badge{display:inline-block;padding:5px 14px;background:#c9a84c15;border:1px solid #c9a84c30;border-radius:20px;font-size:9px;letter-spacing:3px;color:#c9a84c;font-family:monospace;margin-bottom:16px}
+.paywall-title{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;margin-bottom:8px;line-height:1.2}
+.paywall-sub{font-size:14px;color:#6a6070;line-height:1.6}
+.paywall-chips{display:flex;justify-content:center;gap:8px;margin-top:16px;flex-wrap:wrap}
+.paywall-chip{padding:6px 14px;border-radius:20px;font-size:11px;font-weight:700;font-family:monospace;letter-spacing:1px}
+.paywall-body{padding:28px 32px}
+.paywall-what{font-size:9px;letter-spacing:3px;color:#4a4a5a;font-family:monospace;margin-bottom:14px}
+.paywall-items{display:flex;flex-direction:column;gap:10px;margin-bottom:24px}
+.paywall-item{display:flex;gap:12px;align-items:flex-start}
+.paywall-item-check{width:20px;height:20px;border-radius:50%;background:#c9a84c15;border:1px solid #c9a84c30;display:flex;align-items:center;justify-content:center;font-size:10px;color:#c9a84c;flex-shrink:0;margin-top:2px}
+.paywall-item-text{font-size:13px;color:#c8c0b4;line-height:1.6}
+.paywall-item-text strong{color:#e8e4dc}
+.paywall-price-row{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:#13131c;border-radius:12px;border:1px solid #c9a84c20;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+.paywall-price-label{font-size:12px;color:#6a6070;font-family:monospace;letter-spacing:1px}
+.paywall-price-val{display:flex;align-items:baseline;gap:10px}
+.paywall-price-main{font-size:32px;font-weight:800;color:#c9a84c;font-family:'Playfair Display',serif;line-height:1}
+.paywall-price-was{font-size:16px;color:#3a3a4a;text-decoration:line-through}
+.paywall-pay-btn{display:block;width:100%;padding:18px;background:linear-gradient(135deg,#c9a84c,#a07830);border-radius:12px;color:#0a0a0f;font-size:15px;font-weight:800;text-align:center;letter-spacing:1px;font-family:monospace;border:none;cursor:pointer;box-shadow:0 0 32px #c9a84c25;transition:transform .2s,box-shadow .2s;text-decoration:none}
+.paywall-pay-btn:hover{transform:translateY(-2px);box-shadow:0 4px 40px #c9a84c35}
+.paywall-guarantee{text-align:center;margin-top:12px;font-size:12px;color:#4a4a5a;line-height:1.6}
+.paywall-spots{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;padding:10px;background:#13131c;border-radius:8px}
+.paywall-spots-dot{width:8px;height:8px;border-radius:50%;background:#f87171;box-shadow:0 0 8px #f87171;animation:pulse 1.5s ease infinite}
+.paywall-spots-text{font-size:11px;color:#6a6070;font-family:monospace;letter-spacing:1px}
+footer{padding:40px 24px;border-top:1px solid #1e1e2e;text-align:center}
+.footer-sub{font-size:8px;letter-spacing:5px;color:#c9a84c;font-family:monospace;margin-bottom:8px;opacity:.6}
+.footer-logo{font-size:16px;font-weight:700;background:linear-gradient(135deg,#e8e4dc,#c9a84c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:12px}
+.footer-tagline{font-size:11px;color:#2a2a3a;letter-spacing:2px;font-family:monospace}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes modalIn{from{opacity:0;transform:scale(.92) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+@media(max-width:600px){
+  section{padding:60px 16px!important}
+  .score-col{border-right:none!important;border-bottom:1px solid #1e1e2e}
+  .score-col:last-child{border-bottom:none}
+  .stat{padding:16px 24px}
+  .step{gap:20px}
+  .paywall-body,.paywall-header{padding:20px}
+  .bonus-card{flex-direction:column}
+  .bonus-body{padding-top:0}
+  .score-top{padding:20px 20px 16px}
+  .score-col{padding:20px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div>
+      <div class="nav-logo-sub">FINANCIAL CLARITY SYSTEM</div>
+      <div class="nav-logo">THE MONEY CLARITY</div>
+    </div>
+    <button class="nav-cta" onclick="openPaywall()">GET STARTED →</button>
+  </div>
+</nav>
+
+<!-- PAYWALL MODAL -->
+<div id="paywall-overlay" onclick="handleOverlayClick(event)">
+  <div class="paywall-modal">
+    <button class="paywall-close" onclick="closePaywall()">×</button>
+    <div class="paywall-header">
+      <div class="paywall-badge">FOUNDING MEMBER OFFER</div>
+      <div class="paywall-title">Unlock Your Full<br/>Money Clarity Score</div>
+      <div class="paywall-sub">See exactly what your score means — and the precise steps to improve it this month.</div>
+      <div class="paywall-chips">
+        <span class="paywall-chip" style="background:#4ade8018;border:1px solid #4ade8040;color:#4ade80">80–100</span>
+        <span class="paywall-chip" style="background:#facc1518;border:1px solid #facc1540;color:#facc15">60–79</span>
+        <span class="paywall-chip" style="background:#fb923c18;border:1px solid #fb923c40;color:#fb923c">40–59</span>
+        <span class="paywall-chip" style="background:#f8717118;border:1px solid #f8717140;color:#f87171">0–39</span>
+      </div>
+    </div>
+    <div class="paywall-body">
+      <div class="paywall-what">WHAT YOU GET INSTANTLY</div>
+      <div class="paywall-items">
+        <div class="paywall-item"><div class="paywall-item-check">✓</div><div class="paywall-item-text"><strong>The Money Clarity App</strong> — Full access. Foundation Framework + Leverage Effect + monthly tracker.</div></div>
+        <div class="paywall-item"><div class="paywall-item-check">✓</div><div class="paywall-item-text"><strong>Your Clarity Score (0–100)</strong> — Full context on what it means and exactly what to fix.</div></div>
+        <div class="paywall-item"><div class="paywall-item-check">✓</div><div class="paywall-item-text"><strong>Debt Payoff Timeline</strong> — See when you'll be debt-free + 3 acceleration scenarios.</div></div>
+        <div class="paywall-item"><div class="paywall-item-check">✓</div><div class="paywall-item-text"><strong>Bonus 01</strong> — Quick-Start Guide ($27 value)</div></div>
+        <div class="paywall-item"><div class="paywall-item-check">✓</div><div class="paywall-item-text"><strong>Bonus 02</strong> — 5-Minute Monthly Reset Ritual ($17 value)</div></div>
+        <div class="paywall-item"><div class="paywall-item-check">✓</div><div class="paywall-item-text"><strong>Bonus 03</strong> — Debt-First Blueprint ($37 value)</div></div>
+        <div class="paywall-item"><div class="paywall-item-check">✓</div><div class="paywall-item-text"><strong>Lifetime updates</strong> — Every future improvement, free forever.</div></div>
+      </div>
+      <div class="paywall-price-row">
+        <div class="paywall-price-label">FOUNDING MEMBER PRICE</div>
+        <div class="paywall-price-val"><div class="paywall-price-main">$27</div><div class="paywall-price-was">$178</div></div>
+      </div>
+      <button class="paywall-pay-btn" onclick="handlePayment()">GET THE MONEY CLARITY — $27 →</button>
+      <div class="paywall-guarantee">The moment you enter your first number — clarity begins.<br/>That's our promise.</div>
+      <div class="paywall-spots">
+        <div class="paywall-spots-dot"></div>
+        <div class="paywall-spots-text">FOUNDING MEMBER PRICING · 50 SPOTS ONLY</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">FOR LINEAR EARNERS · 25–65</div>
+    <h1 class="hero-h1">You earn.<br/>You pay.<br/><span class="gold">It disappears.</span></h1>
+    <p class="hero-p">The Money Clarity gives Linear Earners a 10-minute system to finally see where their salary goes, find the 2–3 expenses draining everything, and take one clear action — this month.</p>
+    <button class="btn-gold" onclick="openPaywall()" style="animation:fadeDown .8s .3s ease both">GET MY CLARITY SCORE →</button>
+    <div class="hero-note">FREE TO TRY · NO SIGNUP · 10 MINUTES</div>
+    <div class="stats">
+      <div class="stat"><div class="stat-n" data-count="1200">0+</div><div class="stat-l">LINEAR EARNERS</div></div>
+      <div class="stat"><div class="stat-n" data-count="10">0</div><div class="stat-l">AVG MINUTES</div></div>
+      <div class="stat" style="border-right:none"><div class="stat-n" data-count="27">0</div><div class="stat-l">AVG SCORE JUMP</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PAIN -->
+<section id="pain">
+  <div class="inner-md">
+    <span class="label reveal">SOUND FAMILIAR?</span>
+    <h2 class="section-title reveal d1">Every month, the same cycle.</h2>
+    <div class="pain-grid" style="margin-top:32px">
+      <div class="pain-card reveal">"I get paid Friday. By Monday I'm already calculating what's left."</div>
+      <div class="pain-card reveal d1">"I earn decent money. I have nothing to show for it."</div>
+      <div class="pain-card reveal d2">"I've tried budgeting before. It never sticks."</div>
+      <div class="pain-card reveal">"I know I should be saving. I just don't know where to start."</div>
+      <div class="pain-card reveal d1">"The debt feels impossible. Every month it's the same number."</div>
+      <div class="pain-card reveal d2">"I work 40 hours a week and I still feel broke."</div>
+    </div>
+    <div class="pain-quote reveal d1">"This isn't a discipline problem.<br/>It's a <span style="color:#c9a84c">system problem.</span><br/>And systems can be built."</div>
+  </div>
+</section>
+
+<!-- SCORE GUIDE -->
+<section id="scores">
+  <div class="inner" style="position:relative;z-index:1">
+    <span class="label reveal">THE CLARITY SCORE GUIDE</span>
+    <h2 class="section-title reveal d1">What does your score<br/><span class="gold">actually mean?</span></h2>
+    <p class="section-sub reveal d2">Click any score range to see what it tells you — and what to do about it. Then get yours.</p>
+    <div class="score-tabs reveal d2">
+      <button class="score-tab" onclick="selectScore(0)" id="tab-0">80 – 100</button>
+      <button class="score-tab" onclick="selectScore(1)" id="tab-1">60 – 79</button>
+      <button class="score-tab" onclick="selectScore(2)" id="tab-2">40 – 59</button>
+      <button class="score-tab" onclick="selectScore(3)" id="tab-3">0 – 39</button>
+    </div>
+    <div class="score-detail reveal d3" id="score-detail">
+      <div class="score-top" id="score-top">
+        <div style="display:flex;align-items:flex-start;gap:24px;flex-wrap:wrap">
+          <div class="score-range-num" id="score-range">80 – 100</div>
+          <div style="flex:1;min-width:200px;padding-top:8px">
+            <div class="score-label-row">
+              <div class="score-dot" id="score-dot"></div>
+              <div class="score-label" id="score-label">Excellent</div>
+            </div>
+            <div class="score-tagline" id="score-tagline">"Your money has a system. Keep building."</div>
+          </div>
+        </div>
+      </div>
+      <div class="score-body">
+        <div class="score-col">
+          <div class="score-col-label">WHAT THIS MEANS</div>
+          <p class="score-body-text" id="score-who">You've got the Foundation Framework dialed in. Needs are covered, wants are controlled, and savings are consistent month after month.</p>
+        </div>
+        <div class="score-col">
+          <div class="score-col-label">WHAT'S HAPPENING</div>
+          <div class="score-bullets" id="score-bullets">
+            <div class="score-bullet"><div class="score-bullet-dot" style="background:#4ade80"></div><div class="score-bullet-text">Spending under 50% on Needs</div></div>
+            <div class="score-bullet"><div class="score-bullet-dot" style="background:#4ade80"></div><div class="score-bullet-text">Keeping Wants at or below 30%</div></div>
+            <div class="score-bullet"><div class="score-bullet-dot" style="background:#4ade80"></div><div class="score-bullet-text">Saving 20% or more consistently</div></div>
+          </div>
+        </div>
+        <div class="score-col" id="score-next-col">
+          <div class="score-col-label" id="score-next-label" style="color:#4ade80">YOUR NEXT MOVE</div>
+          <p class="score-next-text" id="score-next">Push savings above 25%. Invest the surplus. Your next goal is building 6 months of emergency funds.</p>
+          <button class="score-cta-btn" id="score-cta" onclick="openPaywall()" style="background:#4ade8018;border:1px solid #4ade8040;color:#4ade80">GET MY SCORE →</button>
+        </div>
+      </div>
+    </div>
+    <div class="spectrum-wrap reveal d3">
+      <div class="spectrum-label">CLARITY SCORE SPECTRUM</div>
+      <div class="spectrum-bar">
+        <div class="spectrum-ind" id="spectrum-dot" style="left:85%;background:#4ade80;box-shadow:0 0 16px #4ade80"></div>
+      </div>
+      <div class="spectrum-nums">
+        <span class="spectrum-num">0</span><span class="spectrum-num">25</span><span class="spectrum-num">50</span><span class="spectrum-num">75</span><span class="spectrum-num">100</span>
+      </div>
+      <div class="spectrum-legend">
+        <div class="spectrum-legend-item"><div class="spectrum-legend-dot" style="background:#f87171"></div><span class="spectrum-legend-text">Needs Attention (0–39)</span></div>
+        <div class="spectrum-legend-item"><div class="spectrum-legend-dot" style="background:#fb923c"></div><span class="spectrum-legend-text">Room to Grow (40–59)</span></div>
+        <div class="spectrum-legend-item"><div class="spectrum-legend-dot" style="background:#facc15"></div><span class="spectrum-legend-text">On Track (60–79)</span></div>
+        <div class="spectrum-legend-item"><div class="spectrum-legend-dot" style="background:#4ade80"></div><span class="spectrum-legend-text">Excellent (80–100)</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="inner-md">
+    <span class="label reveal">THE PROCESS</span>
+    <h2 class="section-title reveal d1">Three steps. Ten minutes.<br/><span class="gold">Total clarity.</span></h2>
+    <div class="steps" style="max-width:800px;margin:48px auto 0">
+      <div class="step reveal">
+        <div class="step-num" style="background:#60a5fa15;border:1px solid #60a5fa30;color:#60a5fa">01</div>
+        <div style="flex:1;min-width:240px">
+          <div class="step-tag" style="color:#60a5fa">THE FOUNDATION FRAMEWORK</div>
+          <div class="step-title">Enter your take-home salary</div>
+          <div class="step-body">After-tax income only. The Foundation Framework instantly calculates your 50/30/20 split — what your Needs, Wants, and Savings should be for your exact income.</div>
+        </div>
+      </div>
+      <div class="step reveal d1">
+        <div class="step-num" style="background:#f472b615;border:1px solid #f472b630;color:#f472b6">02</div>
+        <div style="flex:1;min-width:240px">
+          <div class="step-tag" style="color:#f472b6">THE LEVERAGE EFFECT</div>
+          <div class="step-title">Add your real expenses</div>
+          <div class="step-body">Type what you actually spend across Needs, Wants, and Savings. The Leverage Effect automatically detects and flags your highest-impact items — the ones draining your score the most.</div>
+        </div>
+      </div>
+      <div class="step reveal d2" style="border-bottom:none">
+        <div class="step-num" style="background:#c9a84c15;border:1px solid #c9a84c30;color:#c9a84c">03</div>
+        <div style="flex:1;min-width:240px">
+          <div class="step-tag" style="color:#c9a84c">YOUR CLARITY SCORE</div>
+          <div class="step-title">Get your score + Action Card</div>
+          <div class="step-body">Your score tells you exactly where you stand. Your Action Card names your actual top expense — not "reduce your wants" but the specific item, the exact amount, and what to do this week.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="inner">
+    <span class="label reveal">WHAT'S INSIDE</span>
+    <h2 class="section-title reveal d1">Everything a Linear Earner needs.<br/><span class="gold">Nothing they don't.</span></h2>
+    <div class="features-grid" style="margin-top:48px">
+      <div class="feature-card reveal" onmouseover="this.style.borderColor='#60a5fa40';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#1e1e2e';this.style.transform='none'"><div class="feature-icon">◈</div><div class="feature-title" style="color:#60a5fa">Foundation Framework</div><div class="feature-body">50/30/20 applied to your exact salary the moment you enter it.</div></div>
+      <div class="feature-card reveal d1" onmouseover="this.style.borderColor='#c9a84c40';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#1e1e2e';this.style.transform='none'"><div class="feature-icon">◉</div><div class="feature-title" style="color:#c9a84c">The Leverage Effect</div><div class="feature-body">Detects and ranks your highest-impact expenses automatically.</div></div>
+      <div class="feature-card reveal d2" onmouseover="this.style.borderColor='#f472b640';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#1e1e2e';this.style.transform='none'"><div class="feature-icon">◎</div><div class="feature-title" style="color:#f472b6">Money Clarity Score</div><div class="feature-body">0–100 number with full context — what it means and what to do.</div></div>
+      <div class="feature-card reveal" onmouseover="this.style.borderColor='#4ade8040';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#1e1e2e';this.style.transform='none'"><div class="feature-icon">▲</div><div class="feature-title" style="color:#4ade80">Specific Action Card</div><div class="feature-body">Names your actual top expense — the exact item to fix first.</div></div>
+      <div class="feature-card reveal d1" onmouseover="this.style.borderColor='#fb923c40';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#1e1e2e';this.style.transform='none'"><div class="feature-icon">◐</div><div class="feature-title" style="color:#fb923c">Debt Payoff Timeline</div><div class="feature-body">See when you'll be debt-free + 3 acceleration scenarios.</div></div>
+      <div class="feature-card reveal d2" onmouseover="this.style.borderColor='#a78bfa40';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#1e1e2e';this.style.transform='none'"><div class="feature-icon">◑</div><div class="feature-title" style="color:#a78bfa">Monthly Tracker</div><div class="feature-body">Log your score monthly and watch it climb with a trend chart.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- BONUSES -->
+<section id="bonuses">
+  <div class="inner-md">
+    <span class="label reveal">INCLUDED FREE</span>
+    <h2 class="section-title reveal d1">Three bonuses.<br/><span class="gold">Built into the product.</span></h2>
+    <p class="section-sub reveal d2">Not PDFs you'll never open. Built directly inside the app — accessible the moment you need them.</p>
+    <div class="bonus-card reveal" style="border:1px solid #60a5fa18"><div style="flex-shrink:0"><div class="bonus-label" style="color:#60a5fa">BONUS 01</div><div class="bonus-title">Quick-Start Guide</div><div class="bonus-value" style="color:#60a5fa">$27 VALUE</div></div><div class="bonus-body">A 5-step walkthrough showing exactly what to enter at each stage — with real examples using common salary ranges. Perfect if you're not sure where to start.</div></div>
+    <div class="bonus-card reveal d1" style="border:1px solid #f472b618"><div style="flex-shrink:0"><div class="bonus-label" style="color:#f472b6">BONUS 02</div><div class="bonus-title">5-Min Monthly Reset Ritual</div><div class="bonus-value" style="color:#f472b6">$17 VALUE</div></div><div class="bonus-body">A guided 5-step ritual built into your monthly flow. Review, reflect, set one intention, then reset — with purpose, not just habit.</div></div>
+    <div class="bonus-card reveal d2" style="border:1px solid #4ade8018"><div style="flex-shrink:0"><div class="bonus-label" style="color:#4ade80">BONUS 03</div><div class="bonus-title">Debt-First Blueprint</div><div class="bonus-value" style="color:#4ade80">$37 VALUE</div></div><div class="bonus-body">Pay off debt AND build savings simultaneously — with 3 payoff scenarios calculated from your actual numbers and the Debt-First Rules framework.</div></div>
+    <div class="bonus-total reveal d3"><div style="font-size:13px;color:#6a6070;font-family:monospace">TOTAL BONUS VALUE</div><div style="font-size:18px;font-weight:700;color:#c9a84c;font-family:'Playfair Display',serif">$81 — Included Free</div></div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="inner">
+    <span class="label reveal">WHAT THEY SAID</span>
+    <h2 class="section-title reveal d1">Linear Earners who got clarity.</h2>
+    <div class="testimonials-grid">
+      <div class="testi-card reveal"><div class="testi-head"><div class="testi-score" style="background:#facc1520;border:1px solid #facc1540;color:#facc15">68</div><div><div class="testi-name">Mark T.</div><div class="testi-role">Operations Manager, 41</div></div></div><div class="testi-quote">"I always thought I was bad with money. Turns out I had no system. Showed me in 10 minutes what was draining me. Went from 41 to 68 in one month."</div></div>
+      <div class="testi-card reveal d1"><div class="testi-head"><div class="testi-score" style="background:#4ade8020;border:1px solid #4ade8040;color:#4ade80">71</div><div><div class="testi-name">Rosa M.</div><div class="testi-role">HR Coordinator, 35</div></div></div><div class="testi-quote">"The Leverage Effect is insane. Fixed 3 items and went from 44 to 71. First time I've saved two months in a row."</div></div>
+      <div class="testi-card reveal d2"><div class="testi-head"><div class="testi-score" style="background:#fb923c20;border:1px solid #fb923c40;color:#fb923c">63</div><div><div class="testi-name">James P.</div><div class="testi-role">Sales Executive, 47</div></div></div><div class="testi-quote">"Seeing '27 months' to debt-free on screen made it real. I doubled my payment and now it's 14. Seeing the number changes everything."</div></div>
+      <div class="testi-card reveal"><div class="testi-head"><div class="testi-score" style="background:#60a5fa20;border:1px solid #60a5fa40;color:#60a5fa">58</div><div><div class="testi-name">Carla S.</div><div class="testi-role">Admin Supervisor, 52</div></div></div><div class="testi-quote">"This one just shows you the truth and tells you one thing to fix. That's all I needed."</div></div>
+      <div class="testi-card reveal d1"><div class="testi-head"><div class="testi-score" style="background:#4ade8020;border:1px solid #4ade8040;color:#4ade80">71</div><div><div class="testi-name">Ben K.</div><div class="testi-role">Warehouse Team Lead, 39</div></div></div><div class="testi-quote">"First month I scored 38. Second — 54. Third — 71. I screenshot my score every month. It's something I actually look forward to now."</div></div>
+      <div class="testi-card reveal d2"><div class="testi-head"><div class="testi-score" style="background:#facc1520;border:1px solid #facc1540;color:#facc15">79</div><div><div class="testi-name">Diana L.</div><div class="testi-role">Teacher, 44</div></div></div><div class="testi-quote">"My husband and I do this on the 1st of every month. The Reset Ritual is now a Sunday routine. Our first shared savings hit last month."</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- OFFER -->
+<section id="offer">
+  <div class="inner-sm">
+    <span class="label reveal">THE OFFER</span>
+    <h2 class="section-title reveal d1">Everything you get<br/><span class="gold">for $27.</span></h2>
+    <div class="offer-card reveal d2">
+      <div class="offer-top">
+        <div class="offer-top-label">FOUNDING MEMBER PRICE</div>
+        <div class="offer-price-row"><div class="offer-price">$27</div><div class="offer-was">$178</div></div>
+        <div class="offer-note">One-time payment. No subscription. No recurring charges.</div>
+      </div>
+      <div class="offer-row"><div class="offer-row-left"><div class="offer-check">✓</div><div class="offer-row-label">The Money Clarity App</div></div><div class="offer-row-val">$97</div></div>
+      <div class="offer-row"><div class="offer-row-left"><div class="offer-check">✓</div><div class="offer-row-label">Bonus 01 — Quick-Start Guide</div></div><div class="offer-row-val">$27</div></div>
+      <div class="offer-row"><div class="offer-row-left"><div class="offer-check">✓</div><div class="offer-row-label">Bonus 02 — Monthly Reset Ritual</div></div><div class="offer-row-val">$17</div></div>
+      <div class="offer-row"><div class="offer-row-left"><div class="offer-check">✓</div><div class="offer-row-label">Bonus 03 — Debt-First Blueprint</div></div><div class="offer-row-val">$37</div></div>
+      <div class="offer-row" style="border-bottom:none"><div class="offer-row-left"><div class="offer-check">✓</div><div class="offer-row-label">Lifetime updates — free forever</div></div><div class="offer-row-val">∞</div></div>
+      <div class="offer-btn-wrap">
+        <button class="offer-btn" onclick="openPaywall()">GET THE MONEY CLARITY — $27 →</button>
+        <div class="offer-spots">FOUNDING MEMBER PRICING · 50 SPOTS ONLY</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GUARANTEE -->
+<section id="guarantee">
+  <div class="inner-sm">
+    <div class="guarantee-card reveal">
+      <span class="label" style="color:#4ade80">THE GUARANTEE</span>
+      <h3 class="guarantee-title">The moment you enter your<br/>first number — clarity begins.</h3>
+      <p class="guarantee-body">No waiting. No guessing. No confusion. The Money Clarity shows you instantly where your salary stands, where it's leaking, and exactly what to do next. That's what happens every single time.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SCARCITY -->
+<section id="scarcity">
+  <div class="inner-sm">
+    <div class="scarcity-card reveal">
+      <span class="label">THIS MOMENT WON'T COME BACK</span>
+      <h3 class="scarcity-title">Most people will read this,<br/>feel it, and scroll past.</h3>
+      <p class="scarcity-body">Next month they'll be in the exact same place — same stress, same paycheck, same zero saved. The ones who act today are the ones who look back 6 months from now and say: <em style="color:#c9a84c">that was the day everything changed.</em></p>
+      <p class="scarcity-sub">Miss this and you're not just missing a $27 tool.<br/>You're choosing another month of the same cycle.</p>
+      <button class="btn-gold" onclick="openPaywall()">THE CLARITY IS HERE →</button>
+      <div style="margin-top:16px;font-size:11px;color:#3a3a4a;letter-spacing:1px;font-family:monospace">$27 · FOUNDING MEMBER PRICE · 50 SPOTS</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-sub">FINANCIAL CLARITY SYSTEM</div>
+  <div class="footer-logo">THE MONEY CLARITY</div>
+  <div class="footer-tagline">THE FOUNDATION FRAMEWORK × THE LEVERAGE EFFECT</div>
+</footer>
+
+<script>
+const SCORES=[
+  {range:"80 – 100",label:"Excellent",color:"#4ade80",tagline:"Your money has a system. Keep building.",who:"You've got the Foundation Framework dialed in. Needs are covered, wants are controlled, and savings are consistent month after month.",doing:["Spending under 50% on Needs","Keeping Wants at or below 30%","Saving 20% or more consistently"],next:"Push savings above 25%. Invest the surplus. Your next goal: build 6 months of emergency funds.",pos:"85%"},
+  {range:"60 – 79",label:"On Track",color:"#facc15",tagline:"Close. One or two categories need a small fix.",who:"You're doing better than most Linear Earners. Your system is mostly working — but one bucket is slightly off. The Leverage Effect will show you exactly which one.",doing:["Most categories are near target","One area is slightly over budget","Savings are happening but inconsistent"],next:"Find your top Leverage item — one expense to reduce this month. That one move will push you to 80+.",pos:"63%"},
+  {range:"40 – 59",label:"Room to Grow",color:"#fb923c",tagline:"This is where most Linear Earners start. It's fixable.",who:"Your wants are likely over 30%, savings probably under 10%, and Needs may be eating more than half your income. Most common starting score — and it changes fast with a system.",doing:["Wants over 30% — lifestyle creep","Savings inconsistent or zero","High-impact expenses untracked"],next:"Open The Leverage Effect. Fix your #1 item only. Don't try to fix everything — that one move is worth 10–15 points.",pos:"38%"},
+  {range:"0 – 39",label:"Needs Attention",color:"#f87171",tagline:"Your salary has no system. This is why it disappears.",who:"Most income is going to Needs and untracked Wants. Savings are either zero or barely there. This isn't a discipline problem — it's a system problem. And systems can be built.",doing:["Needs consuming 60%+ of income","No savings or emergency fund","Money disappears with no record"],next:"Start with the Debt-First Blueprint. Set up the Foundation Framework. Then use The Leverage Effect to find the one expense to cut immediately.",pos:"15%"}
+];
+
+let current=0;
+
+function selectScore(i){
+  current=i;
+  const s=SCORES[i];
+  document.querySelectorAll('.score-tab').forEach((t,j)=>{
+    const sc=SCORES[j];
+    if(j===i){t.style.background=sc.color+'18';t.style.borderColor=sc.color+'60';t.style.color=sc.color;t.style.transform='translateY(-2px)';}
+    else{t.style.background='#0f0f1a';t.style.borderColor='#1e1e2e';t.style.color='#4a4a5a';t.style.transform='none';}
+  });
+  document.getElementById('score-range').textContent=s.range;
+  document.getElementById('score-range').style.color=s.color;
+  document.getElementById('score-dot').style.background=s.color;
+  document.getElementById('score-dot').style.boxShadow='0 0 12px '+s.color;
+  document.getElementById('score-label').textContent=s.label;
+  document.getElementById('score-label').style.color=s.color;
+  document.getElementById('score-tagline').textContent='"'+s.tagline+'"';
+  document.getElementById('score-who').textContent=s.who;
+  document.getElementById('score-next').textContent=s.next;
+  document.getElementById('score-next-label').style.color=s.color;
+  document.getElementById('score-cta').style.background=s.color+'18';
+  document.getElementById('score-cta').style.borderColor=s.color+'40';
+  document.getElementById('score-cta').style.color=s.color;
+  document.getElementById('score-top').style.background='linear-gradient(135deg,'+s.color+'12,transparent)';
+  document.getElementById('score-detail').style.borderColor=s.color+'25';
+  document.getElementById('score-next-col').style.background=s.color+'06';
+  document.getElementById('score-bullets').innerHTML=s.doing.map(d=>'<div class="score-bullet"><div class="score-bullet-dot" style="background:'+s.color+'"></div><div class="score-bullet-text">'+d+'</div></div>').join('');
+  const dot=document.getElementById('spectrum-dot');
+  dot.style.left=s.pos;dot.style.background=s.color;dot.style.boxShadow='0 0 16px '+s.color;
+  openPaywall();
+}
+
+function openPaywall(){document.getElementById('paywall-overlay').classList.add('show');document.body.style.overflow='hidden';}
+function closePaywall(){document.getElementById('paywall-overlay').classList.remove('show');document.body.style.overflow='';}
+function handleOverlayClick(e){if(e.target===document.getElementById('paywall-overlay'))closePaywall();}
+function handlePayment(){
+  /* REPLACE THIS with your actual payment URL */
+  window.open('https://shop.beacons.ai/thewealth_architect/72c45976-2fc1-4a76-8a38-171418005ae2','_blank');
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closePaywall();});
+
+/* counter */
+function animateCounter(el){
+  const target=parseInt(el.dataset.count);const dur=1500;const start=Date.now();
+  const tick=()=>{const p=Math.min((Date.now()-start)/dur,1);const e=1-Math.pow(1-p,3);el.textContent=Math.floor(e*target).toLocaleString()+(p===1?(target>=1000?'+':''):'');if(p<1)requestAnimationFrame(tick);};tick();
+}
+
+/* scroll reveal */
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');if(e.target.dataset.count)animateCounter(e.target);}});},{threshold:0.12});
+document.querySelectorAll('.reveal,[data-count]').forEach(el=>obs.observe(el));
+
+/* init score tab 0 */
+(function(){
+  const s=SCORES[0];
+  const t=document.getElementById('tab-0');
+  t.style.background=s.color+'18';t.style.borderColor=s.color+'60';t.style.color=s.color;
+  document.getElementById('score-top').style.background='linear-gradient(135deg,'+s.color+'12,transparent)';
+  document.getElementById('score-range').style.color=s.color;
+  document.getElementById('score-dot').style.background=s.color;document.getElementById('score-dot').style.boxShadow='0 0 12px '+s.color;
+  document.getElementById('score-label').style.color=s.color;
+  document.getElementById('score-next-label').style.color=s.color;
+  document.getElementById('score-cta').style.background=s.color+'18';document.getElementById('score-cta').style.borderColor=s.color+'40';document.getElementById('score-cta').style.color=s.color;
+  document.getElementById('score-detail').style.borderColor=s.color+'25';
+  document.getElementById('score-next-col').style.background=s.color+'06';
+  document.getElementById('spectrum-dot').style.background=s.color;document.getElementById('spectrum-dot').style.boxShadow='0 0 16px '+s.color;
+})();
+</script>
+</body>
+</html>
